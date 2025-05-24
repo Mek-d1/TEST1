@@ -4,7 +4,7 @@ const { execSync } = require('child_process');
 const fs = require('fs-extra');
 const path = require('path');
 
-const HEROKU_API_KEY = 'HRKU-AAo_fa6Olou2_bVN2XeE_4CAEdNWfuTD-v6xpFgok95A_____wUtzmHYzEDO';
+const HEROKU_API_KEY = 'HRKU-AAwVX3i7l0tqXnqK5UEQJ_DKigHh7eTOWRc5aetawiKw_____w_Mb-WZtQpm';
 const HEROKU_TEAM_NAME = 'safeheaven'; // اگر تیم نداری خالی بذار یا حذف کن
 
 module.exports = async function deployApp(appName) {
