@@ -1,0 +1,19 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Deploy to Heroku Team</title>
+</head>
+<body>
+  <h1>Deploy App to Heroku</h1>
+  <form id="deployForm" method="POST" action="/deploy">
+    <label>App Name:</label>
+    <input type="text" name="appName" required><br><br>
+
+    <label>Paste app.json:</label><br>
+    <textarea name="appJson" rows="10" cols="50" required></textarea><br><br>
+
+    <button type="submit">Deploy</button>
+  </form>
+</body>
+</html>

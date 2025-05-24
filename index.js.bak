@@ -1,0 +1,41 @@
+// index.js
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+const bodyParser = require('body-parser');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const HEROKU_TEAM = "safeheaven"; // ← اسم تیم Heroku
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname)));
+
+app.post('/deploy', async (req, res) => {
+  const { appName, appJson } = req.body;
+
+  try {
+    const botPath = path.join(__dirname, 'bot');
+
+    // نوشتن app.json
+    fs.writeFileSync(path.join(botPath, 'app.json'), appJson);
+
+    // ساخت اپ در تیم
+    execSync(`heroku create ${appName} --team ${HEROKU_TEAM}`, { stdio: 'inherit', cwd: botPath });
+
+    // لاگین قبلاً انجام شده، یا از محیط AUTH_TOKEN استفاده کن
+    execSync(`heroku container:push web -a ${appName}`, { stdio: 'inherit', cwd: botPath });
+    execSync(`heroku container:release web -a ${appName}`, { stdio: 'inherit', cwd: botPath });
+
+    const appUrl = `https://${appName}.herokuapp.com`;
+    res.send(`<h2>Deployment successful!</h2><a href="${appUrl}" target="_blank">${appUrl}</a>`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Deployment failed. Check logs.");
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
